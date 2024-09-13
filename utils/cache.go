@@ -2,36 +2,28 @@ package cache
 
 
 type cache struct {
-	key string 
-	value interface{}
+	values map[string]interface{}
 }
 
 
 
-func New() cache{
+func  New() cache{
 	return cache{
-		key: "",
-		value: nil,
+		values: make(map[string]interface{}),
 	}
 }
 
 
 func (c *cache) Set(key string, value interface{}){
-	c.key = key
-	c.value = value
+	c.values[key] = value
 }
 
 func (c cache) Get(key string) interface{}{
-	return cache{
-		key: c.key, 
-		value: c.value,
-	}
+	return c.values[key]
 }
 
 func (c *cache) Delete(key string){
-	c.key = ""
-	c.value = nil
-
+	delete(c.values, key)
 }
 
 
