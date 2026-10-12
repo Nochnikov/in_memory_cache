@@ -2,27 +2,23 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	cache "packages/utils"
 )
 
 func main() {
-	cache := cache.New()
+	cache := cache.New[string, int](time.Minute)
+	defer cache.Close()
 
-	
+	cache.Set("a", 1, 5*time.Second)
+	cache.Set("b", 5432, 0)
 
-	cache.Set("1", []int{1, 2, 3})
-	cache.Set("2", map[string]int{
-		"Test1": 15,
-		"Test2": 16,
-		"Test3": 17,})
+	v, ok := cache.Get("a")
 
-	fmt.Println(cache.Get("1"))
-	fmt.Println(cache.Get("2"))
-
-	cache.Delete("1")
-	cache.Delete("2")
-	fmt.Println(cache.Get("1"))
-	fmt.Println(cache.Get("2"))
-
-
+	if !ok {
+		fmt.Println("Some error accured", ok)
+	} else {
+		fmt.Print(v)
+	}
 }
